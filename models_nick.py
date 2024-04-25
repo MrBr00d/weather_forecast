@@ -1,6 +1,17 @@
 import numpy as np
 import pandas as pd
 
+def get_months(data: pd.DataFrame) -> pd.DataFrame:
+    df = data.copy()
+    month_name = []
+    for row in range(len(df)):
+        month_name.append(df["date"][row].month_name())
+    df["month"] = month_name
+    a = pd.get_dummies(df["month"])
+    df = df.join(a)
+    df.drop("month", axis=1, inplace=True)
+    return df
+
 def make_sin(len_sin: int, period: int, offset: int=0, amplitude: int=1, mean: int=0):
     t = np.linspace(0,len_sin,len_sin)
     sinwave = amplitude * np.sin(2*np.pi * t/period-offset)+mean
